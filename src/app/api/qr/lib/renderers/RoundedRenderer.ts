@@ -13,27 +13,34 @@ export class RoundedRenderer extends AbstractQRCodeRenderer {
 
     const { canvas, ctx } = this.createCanvas(actualSize);
 
-    // Fill background
     ctx.fillStyle = config.backgroundColor;
     ctx.fillRect(0, 0, actualSize, actualSize);
 
-    // Apply gradient or solid color
     ctx.fillStyle = this.applyGradient(ctx, config, actualSize);
 
-    // Draw QR code cells with rounded corners
     for (let row = 0; row < matrix.size; row++) {
       for (let col = 0; col < matrix.size; col++) {
         if (matrix.data[row][col]) {
           const x = config.margin + col * cellSize;
           const y = config.margin + row * cellSize;
-          const radius = cellSize * 0.2;
 
-          this.drawRoundedRect(ctx, x, y, cellSize, cellSize, radius);
+          // Add margin between cells
+          const cellMargin = Math.max(1, Math.floor(cellSize * 0.1));
+          const actualCellSize = cellSize - cellMargin * 2;
+          const radius = actualCellSize * 0.2;
+
+          this.drawRoundedRect(
+            ctx,
+            x + cellMargin,
+            y + cellMargin,
+            actualCellSize,
+            actualCellSize,
+            radius,
+          );
         }
       }
     }
 
-    // Add logo if provided
     if (config.logo) {
       await this.addLogo(ctx, config.logo, actualSize);
     }
@@ -74,7 +81,6 @@ export class RoundedRenderer extends AbstractQRCodeRenderer {
       const logoX = (canvasSize - logoSize) / 2;
       const logoY = (canvasSize - logoSize) / 2;
 
-      // Draw white rounded background for logo
       const padding = 8;
       ctx.fillStyle = "#ffffff";
       this.drawRoundedRect(
@@ -86,7 +92,6 @@ export class RoundedRenderer extends AbstractQRCodeRenderer {
         10,
       );
 
-      // Draw the logo
       ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
     } catch (error) {
       console.error("Error adding logo:", error);
