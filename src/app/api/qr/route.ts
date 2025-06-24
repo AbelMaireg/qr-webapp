@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { QRCodeConfigurationBuilder } from "./lib/QRCodeConfigurationBuilder";
 import { CellShape, GradientDirection } from "./lib/types/QRCodeConfiguration";
+import { QRCodeRendererFactory } from "./lib/QRCodeRendererFactory";
+import { QRCodeService } from "./lib/QRCodeService";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,9 +41,19 @@ export async function POST(request: NextRequest) {
 
     const config = configBuilder.build();
 
-    return NextResponse.json({
-      message: "QR code configuration created successfully",
-      config,
+    const renderer = QRCodeRendererFactory.createRenderer(format as any);
+
+    const qrService = new QRCodeService();
+    const buffer = await qrService.generateQRCode(config, renderer);
+
+    const contentType = format === "jpg" ? "image/jpeg" : "image/png";
+    const filename = `qrcode.${format}`;
+
+    return new NextResponse(buffer, {
+      headers: {
+        "Content-Type": contentType,
+        "Content-Disposition": `attachment; filename="${filename}"`,
+      },
     });
   } catch (error) {
     console.error("Error processing request:", error);
