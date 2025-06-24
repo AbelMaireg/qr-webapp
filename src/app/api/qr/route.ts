@@ -3,6 +3,7 @@ import { QRCodeConfigurationBuilder } from "./lib/QRCodeConfigurationBuilder";
 import { CellShape, GradientDirection } from "./lib/types/QRCodeConfiguration";
 import { QRCodeRendererFactory } from "./lib/QRCodeRendererFactory";
 import { QRCodeService } from "./lib/QRCodeService";
+import { QRCodeErrorCorrectionLevel } from "qrcode";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,6 +20,9 @@ export async function POST(request: NextRequest) {
     const cellShape = data.get("cellShape") as CellShape;
     const logoFile = data.get("logo") as File | null;
     const margin = parseInt(data.get("margin") as string, 10) || 0;
+    const errorCorrectionLevel = data.get("errorCorrectionLevel") as
+      | QRCodeErrorCorrectionLevel
+      | "M";
 
     if (!text) {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
@@ -31,7 +35,8 @@ export async function POST(request: NextRequest) {
       .setBackgroundColor(backgroundColor || "#FFFFFF")
       .setCellShape(cellShape || "square")
       .setGradient(gradientColor || "#000000", gradientDirection)
-      .setMargin(margin);
+      .setMargin(margin)
+      .setErrorCorrectionLevel(errorCorrectionLevel);
 
     if (logoFile) {
       configBuilder.setLogo(Buffer.from(await logoFile.arrayBuffer()));

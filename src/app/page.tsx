@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Download, QrCode, Loader2, Upload, Palette } from "lucide-react"
 import { toast } from "sonner"
+import { QRCodeErrorCorrectionLevel } from "qrcode"
 
 type CellShape = "square" | "circle" | "rounded" | "margined"
 type GradientDirection = "none" | "left-right" | "top-bottom" | "diagonal"
@@ -28,6 +29,7 @@ export default function QRGenerator() {
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string>("")
   const [margin, setMargin] = useState(0)
+  const [errorCorrectionLevel, setErrorCorrectionLevel] = useState<QRCodeErrorCorrectionLevel>("M")
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -71,6 +73,7 @@ export default function QRGenerator() {
       formData.append("gradientDirection", gradientDirection)
       formData.append("cellShape", cellShape)
       formData.append("margin", margin.toString())
+      formData.append("errorCorrectionLevel", errorCorrectionLevel)
 
       if (logoFile) {
         formData.append("logo", logoFile)
@@ -256,6 +259,23 @@ export default function QRGenerator() {
                       <SelectItem value="circle">Circle</SelectItem>
                       <SelectItem value="rounded">Rounded Square</SelectItem>
                       <SelectItem value="margined">Margined Square</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="errorCorrection">Error Correction Level</Label>
+                  <Select
+                    value={errorCorrectionLevel}
+                    onValueChange={(value: QRCodeErrorCorrectionLevel) => setErrorCorrectionLevel(value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="L" className="text-red-600">Low (7%)</SelectItem>
+                      <SelectItem value="M" className="text-orange-400">Medium (15%)</SelectItem>
+                      <SelectItem value="Q" className="text-lime-400">Quartile (25%)</SelectItem>
+                      <SelectItem value="H" className="text-green-600">High (30%)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

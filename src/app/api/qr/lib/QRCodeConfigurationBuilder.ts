@@ -1,3 +1,4 @@
+import { QRCodeErrorCorrectionLevel } from "qrcode";
 import {
   QRCodeConfiguration,
   CellShape,
@@ -46,6 +47,11 @@ export class QRCodeConfigurationBuilder {
 
   setMargin(margin: number): this {
     this.config.margin = margin;
+    return this;
+  }
+
+  setErrorCorrectionLevel(level: QRCodeErrorCorrectionLevel): this {
+    this.config.errorCorrectionLevel = level;
     return this;
   }
 

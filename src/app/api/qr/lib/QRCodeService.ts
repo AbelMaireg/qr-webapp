@@ -1,4 +1,7 @@
-import QRCode from "qrcode";
+import QRCode, {
+  ErrorCorrectionLevel,
+  QRCodeErrorCorrectionLevel,
+} from "qrcode";
 import { QRCodeConfiguration } from "./types/QRCodeConfiguration";
 import { AbstractQRCodeRenderer } from "./renderers/AbstractQRCodeRenderer";
 import { QRCodeRendererFactory } from "./QRCodeRendererFactory";
@@ -10,7 +13,10 @@ export class QRCodeService {
     renderer?: AbstractQRCodeRenderer,
   ): Promise<Buffer> {
     try {
-      const matrix = await this.generateMatrix(config.text);
+      const matrix = await this.generateMatrix(
+        config.text,
+        config.errorCorrectionLevel,
+      );
 
       const qrRenderer =
         renderer ||
@@ -22,9 +28,12 @@ export class QRCodeService {
     }
   }
 
-  private async generateMatrix(text: string): Promise<QRCodeMatrix> {
+  private async generateMatrix(
+    text: string,
+    errorCorrectionLevel: QRCodeErrorCorrectionLevel,
+  ): Promise<QRCodeMatrix> {
     try {
-      const qrData = QRCode.create(text, { errorCorrectionLevel: "M" });
+      const qrData = QRCode.create(text, { errorCorrectionLevel });
       const modules = qrData.modules;
 
       const size = modules.size;
