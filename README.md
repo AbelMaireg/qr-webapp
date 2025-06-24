@@ -325,8 +325,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have questions or need help:
 
-- 📧 Email: abelrighthere@gmail.com
-- 💬 Telegram: @AbelMaireg
+- 📧 Email: [abelrighthere@gmail.com](https://https://gmail.com)
+- 💬 Telegram: [@AbelMaireg](https://t.me/AbelMaireg)
 - 📖 Documentation: [Go To](https://github.com/Zemenaytech/qrcodegenerator)
 - 🐛 Issues: [GitHub Issues](https://github.com/Zemenaytech/qrcodegenerator/issues)
 

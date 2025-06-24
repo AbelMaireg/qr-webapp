@@ -28,15 +28,11 @@ export async function POST(request: NextRequest) {
       .setSize(512)
       .setForegroundColor(foregroundColor || "#000000")
       .setBackgroundColor(backgroundColor || "#FFFFFF")
-      .setCellShape(cellShape || "square");
-
-    if (gradientDirection && gradientColor) {
-      configBuilder.setGradient(gradientColor || "#000000", gradientDirection);
-    }
+      .setCellShape(cellShape || "square")
+      .setGradient(gradientColor || "#000000", gradientDirection);
 
     if (logoFile) {
-      const logoBuffer = Buffer.from(await logoFile.arrayBuffer());
-      configBuilder.setLogo(logoBuffer);
+      configBuilder.setLogo(Buffer.from(await logoFile.arrayBuffer()));
     }
 
     const config = configBuilder.build();
