@@ -1,69 +1,50 @@
 import { type NextRequest, NextResponse } from "next/server";
-import QRCode from "qrcode";
+import { QRCodeConfigurationBuilder } from "./lib/QRCodeConfigurationBuilder";
+import { CellShape, GradientDirection } from "./lib/types/QRCodeConfiguration";
 
 export async function POST(request: NextRequest) {
   try {
-    const { text, format } = await request.json();
+    const data = await request.formData();
+
+    const text = data.get("text") as string;
+    const format = data.get("format") as string;
+    const foregroundColor = data.get("foregroundColor") as string;
+    const backgroundColor = data.get("backgroundColor") as string;
+    const gradientColor = data.get("gradientColor") as string;
+    const gradientDirection = data.get(
+      "gradientDirection",
+    ) as GradientDirection;
+    const cellShape = data.get("cellShape") as CellShape;
+    const logoFile = data.get("logo") as File | null;
 
     if (!text) {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
     }
 
-    const options = {
-      width: 512,
-      margin: 2,
-      color: {
-        dark: "#000000",
-        light: "#FFFFFF",
-      },
-    };
+    const configBuilder = new QRCodeConfigurationBuilder()
+      .setText(text)
+      .setSize(512)
+      .setForegroundColor(foregroundColor || "#000000")
+      .setBackgroundColor(backgroundColor || "#FFFFFF")
+      .setCellShape(cellShape || "square");
 
-    switch (format) {
-      case "png":
-        const pngBuffer = await QRCode.toBuffer(text, {
-          ...options,
-          type: "png",
-        });
-        return new NextResponse(pngBuffer, {
-          headers: {
-            "Content-Type": "image/png",
-            "Content-Disposition": 'attachment; filename="qrcode.png"',
-          },
-        });
-
-      case "jpg":
-        // Generate PNG first, then convert to JPG format
-        const jpgBuffer = await QRCode.toBuffer(text, {
-          ...options,
-          type: "png",
-        });
-        return new NextResponse(jpgBuffer, {
-          headers: {
-            "Content-Type": "image/jpeg",
-            "Content-Disposition": 'attachment; filename="qrcode.jpg"',
-          },
-        });
-
-      case "svg":
-        const svgString = await QRCode.toString(text, {
-          ...options,
-          type: "svg",
-        });
-        return new NextResponse(svgString, {
-          headers: {
-            "Content-Type": "image/svg+xml",
-            "Content-Disposition": 'attachment; filename="qrcode.svg"',
-          },
-        });
-
-      default:
-        return NextResponse.json(
-          { error: "Invalid format. Supported formats: png, jpg, svg" },
-          { status: 400 },
-        );
+    if (gradientDirection && gradientColor) {
+      configBuilder.setGradient(gradientColor || "#000000", gradientDirection);
     }
+
+    if (logoFile) {
+      const logoBuffer = Buffer.from(await logoFile.arrayBuffer());
+      configBuilder.setLogo(logoBuffer);
+    }
+
+    const config = configBuilder.build();
+
+    return NextResponse.json({
+      message: "QR code configuration created successfully",
+      config,
+    });
   } catch (error) {
-    console.error("QR Code generation error:", error);
+    console.error("Error processing request:", error);
     return NextResponse.json(
       { error: "Failed to generate QR code" },
       { status: 500 },
