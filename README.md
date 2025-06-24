@@ -109,6 +109,8 @@ https://domain.com/api
 | `gradientDirection` | string | No | Gradient direction (`left-right`, `top-bottom`, `diagonal`, `none`) |
 | `cellShape` | string | No | Cell shape (`square`, `circle`, `rounded`, `margined`) |
 | `logo` | file | No | Logo image file (max 2MB) |
+| `margin` | number | No | Frame margin |
+| `errorCorrectionLevel` | string | No | Level (`L`, `M`, `Q`, `H`) |
 
 **Example Request:**
 
@@ -121,7 +123,9 @@ curl -X POST https://domain.com/api/qr \\
   -F "gradientColor=#ff0000" \\
   -F "gradientDirection=left-right" \\
   -F "cellShape=circle" \\
-  -F "logo=@logo.png"
+  -F "logo=@logo.png" \\
+  -F "margin=2" \\
+  -F "errorCorrectionLevel=M"
 ```
 
 **Response:**
@@ -138,6 +142,8 @@ formData.append('format', 'png');
 formData.append('foregroundColor', '#000000');
 formData.append('backgroundColor', '#ffffff');
 formData.append('cellShape', 'circle');
+formData.append('margin', '2')
+formData.append('errorCorrectionLevel', 'M')
 
 const response = await fetch('/api/qr', {
   method: 'POST',
