@@ -131,8 +131,8 @@ export default function QRGenerator() {
           {/* Input Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Content & Format</CardTitle>
-              <CardDescription>Enter your text and choose the output format</CardDescription>
+              <CardTitle>Content</CardTitle>
+              <CardDescription>Enter your text</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -158,7 +158,7 @@ export default function QRGenerator() {
                   Customization
                 </div>
               </CardTitle>
-              <CardDescription>Customize colors, gradients, and shapes</CardDescription>
+              <CardDescription>Customize colors, gradients, format & shapes</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
