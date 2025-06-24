@@ -41,7 +41,10 @@ export async function POST(request: NextRequest) {
 
     const config = configBuilder.build();
 
-    const renderer = QRCodeRendererFactory.createRenderer(format as any);
+    const renderer = QRCodeRendererFactory.createRenderer(
+      config,
+      format as any,
+    );
 
     const qrService = new QRCodeService();
     const buffer = await qrService.generateQRCode(config, renderer);

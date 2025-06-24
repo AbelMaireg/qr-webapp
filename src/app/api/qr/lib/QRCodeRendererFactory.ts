@@ -1,13 +1,18 @@
 import { AbstractQRCodeRenderer } from "./renderers/AbstractQRCodeRenderer";
+import { CircleRenderer } from "./renderers/CircleRenderer";
+import { RoundedRenderer } from "./renderers/RoundedRenderer";
 import { SquareRenderer } from "./renderers/SquareRenderer";
-import { OutputFormat } from "./types/QRCodeConfiguration";
+import { OutputFormat, QRCodeConfiguration } from "./types/QRCodeConfiguration";
 
 export class QRCodeRendererFactory {
-  static createRenderer(format: OutputFormat): AbstractQRCodeRenderer {
+  static createRenderer(
+    config: QRCodeConfiguration,
+    format: OutputFormat,
+  ): AbstractQRCodeRenderer {
     switch (format) {
       case "png":
       case "jpg":
-        return new SquareRenderer(format);
+        return this.createShapeRenderer(config.cellShape, format);
       default:
         throw new Error(`Unsupported format: ${format}`);
     }
@@ -21,13 +26,12 @@ export class QRCodeRendererFactory {
       case "square":
       case "margined":
         return new SquareRenderer(format);
-      // TODO: Implement other shapes when needed
-      // case "circle":
-      //   return new CircleRenderer(format);
-      // case "rounded":
-      //   return new RoundedRenderer(format);
+      case "circle":
+        return new CircleRenderer(format);
+      case "rounded":
+        return new RoundedRenderer(format);
       default:
-        return new SquareRenderer(format);
+        return new RoundedRenderer(format);
     }
   }
 }
