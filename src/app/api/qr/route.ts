@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     ) as GradientDirection;
     const cellShape = data.get("cellShape") as CellShape;
     const logoFile = data.get("logo") as File | null;
+    const margin = parseInt(data.get("margin") as string, 10) || 0;
 
     if (!text) {
       return NextResponse.json({ error: "Text is required" }, { status: 400 });
@@ -29,7 +30,8 @@ export async function POST(request: NextRequest) {
       .setForegroundColor(foregroundColor || "#000000")
       .setBackgroundColor(backgroundColor || "#FFFFFF")
       .setCellShape(cellShape || "square")
-      .setGradient(gradientColor || "#000000", gradientDirection);
+      .setGradient(gradientColor || "#000000", gradientDirection)
+      .setMargin(margin);
 
     if (logoFile) {
       configBuilder.setLogo(Buffer.from(await logoFile.arrayBuffer()));

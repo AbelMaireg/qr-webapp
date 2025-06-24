@@ -27,6 +27,7 @@ export default function QRGenerator() {
   const [cellShape, setCellShape] = useState<CellShape>("square")
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string>("")
+  const [margin, setMargin] = useState(0)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -69,6 +70,7 @@ export default function QRGenerator() {
       formData.append("gradientColor", gradientColor)
       formData.append("gradientDirection", gradientDirection)
       formData.append("cellShape", cellShape)
+      formData.append("margin", margin.toString())
 
       if (logoFile) {
         formData.append("logo", logoFile)
@@ -200,6 +202,7 @@ export default function QRGenerator() {
                   </div>
                 </div>
               </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="gradient">Gradient Direction</Label>
@@ -241,32 +244,49 @@ export default function QRGenerator() {
                 )}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="shape">Cell Shape</Label>
-                <Select value={cellShape} onValueChange={(value: CellShape) => setCellShape(value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select shape" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="square">Square</SelectItem>
-                    <SelectItem value="circle">Circle</SelectItem>
-                    <SelectItem value="rounded">Rounded Square</SelectItem>
-                    <SelectItem value="margined">Margined Square</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="shape">Cell Shape</Label>
+                  <Select value={cellShape} onValueChange={(value: CellShape) => setCellShape(value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select shape" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="square">Square</SelectItem>
+                      <SelectItem value="circle">Circle</SelectItem>
+                      <SelectItem value="rounded">Rounded Square</SelectItem>
+                      <SelectItem value="margined">Margined Square</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="format">Output Format</Label>
-                <Select value={format} onValueChange={setFormat}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select format" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="png">PNG</SelectItem>
-                    <SelectItem value="jpg">JPG</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-3 gap-4">
+
+                <div className="space-y-2">
+                  <Label htmlFor="format">Output</Label>
+                  <Select value={format} onValueChange={setFormat}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select format" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="png">PNG</SelectItem>
+                      <SelectItem value="jpg">JPG</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="margin">Margin</Label>
+                  <Input
+                    id="margin"
+                    type="number"
+                    min="0"
+                    value={margin}
+                    onChange={(e) => setMargin(Number(e.target.value))}
+                    placeholder="Enter margin in pixels"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
