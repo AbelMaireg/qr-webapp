@@ -1,119 +1,68 @@
 # Advanced QR Code Generator
 
-A modern, feature-rich QR code generator built with Next.js that allows users to create highly customizable QR codes with colors, gradients, logos, and different cell shapes. The project features a clean, responsive web interface and a robust backend API designed with enterprise-level architecture patterns.
+A modern, feature-rich QR code generator built with Next.js 15, featuring advanced customization options, session management, and a clean modular architecture.
+
 
 ## 🚀 Features
 
-### Frontend Features
-- **Intuitive Web Interface**: Clean, responsive design built with shadcn/ui components
-- **Real-time Preview**: Instant QR code generation and preview
-- **Color Customization**: Full color picker support for foreground and background colors
-- **Gradient Support**: Linear gradients in multiple directions (left-right, top-bottom, diagonal)
-- **Logo Embedding**: Upload and embed logos in the center of QR codes
-- **Multiple Cell Shapes**: Choose from square, circle, rounded, or margined cell styles
-- **Format Options**: Export as PNG or JPG with high quality
-- **Drag & Drop**: Easy logo upload with file validation
+### Core Functionality
+- **Text/URL Encoding**: Generate QR codes from any text or URL
+- **Multiple Output Formats**: Export as PNG or JPG
+- **High Resolution**: Generate crisp, high-quality QR codes (512x512px)
 
-### Backend Features
-- **RESTful API**: Clean API endpoints for external integration
-- **Design Patterns**: Enterprise-level architecture with Strategy, Builder, and Factory patterns
-- **Type Safety**: Full TypeScript implementation with comprehensive type definitions
-- **Error Handling**: Robust error handling and validation
-- **File Processing**: Advanced image processing with canvas operations
-- **Scalable Architecture**: Easy to extend with new features and renderers
+### Advanced Customization
+- **Custom Colors**: Choose any foreground and background colors
+- **Gradient Support**: Create beautiful gradients (left-right, top-bottom, diagonal)
+- **Cell Shapes**: Square, Circle, Rounded, or Margined cell styles
+- **Logo Embedding**: Add your brand logo to the center of QR codes
+- **Adjustable Margins**: Control spacing around the QR code
+- **Error Correction Levels**: Low (7%), Medium (15%), Quartile (25%), High (30%)
+
+### User Experience
+- **Session Management**: Save and restore user sessions with cookie consent
+- **Generation History**: View and reload previous QR code configurations
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Real-time Preview**: See your QR code update as you customize
+- **Toast Notifications**: Clear feedback for all user actions
+
+### Technical Features
+- **Modular Architecture**: Clean, maintainable component structure
+- **Custom Hooks**: Reusable logic with `useQRGenerator` and `useSession`
+- **Type Safety**: Full TypeScript implementation
+- **Design Patterns**: Builder, Strategy, and Factory patterns in backend
+- **Database Integration**: PostgreSQL with Prisma ORM
+- **Canvas Rendering**: High-performance QR code generation using HTML5 Canvas
+
 
 ## 🏗️ Project Architecture
 
-The project follows modern software engineering principles and design patterns:
+### Frontend Components
+- **QRCodeForm**: Text input component
+- **CustomizationPanel**: All customization controls
+- **PreviewPanel**: QR code preview and download
+- **HistorySidebar**: Session history management
+- **FeatureCards**: Feature showcase
+- **PageHeader**: Page title and navigation
 
-### Design Patterns Implemented
+### Backend Services
+- **QRCodeService**: Core QR code generation logic
+- **QRCodeConfigurationBuilder**: Builder pattern for configuration
+- **QRCodeRendererFactory**: Factory pattern for different renderers
+- **AbstractQRCodeRenderer**: Base class for rendering strategies
 
-#### 1. **Builder Pattern**
-```typescript
-const config = new QRCodeConfigurationBuilder()
-  .setText("Hello World")
-  .setSize(512)
-  .setForegroundColor("#000000")
-  .setGradient("#ff0000", "left-right")
-  .build();
-```
+### Rendering Strategies
+- **SquareRenderer**: Standard square cells with margin support
+- **CircleRenderer**: Circular cell rendering
+- **RoundedRenderer**: Rounded corner cells with spacing
 
-#### 2. **Strategy Pattern**
-Different rendering strategies for various cell shapes:
-- `SquareRenderer` - Standard square cells
-- `CircleRenderer` - Circular cells
-- `RoundedRenderer` - Rounded corner cells
+### Database Schema
+- **client_sessions**: User session management
+- **qrc_gen_logs**: QR code generation history and analytics
 
-#### 3. **Factory Pattern**
-```typescript
-const renderer = QRCodeRendererFactory.createShapeRenderer(shape, format);
-```
-
-#### 4. **Service Pattern**
-Business logic encapsulation in `QRCodeService`
-
-### Project Structure
-
-```
-├── app/
-│   ├── page.tsx                 # Main frontend application
-│   ├── layout.tsx               # Root layout with Toaster
-│   ├── globals.css              # Global styles
-│   └── api/
-│       └── qr/
-│           ├── route.ts         # API endpoint handler
-│           └── lib/
-│               ├── types/       # TypeScript type definitions
-│               ├── builder      # Builder pattern implementations
-│               ├── renderers/   # Strategy pattern renderers
-│               ├── factory      # Factory pattern implementations
-│               └── service      # Business logic services
-├── components/
-│   └── ui/                      # shadcn/ui components
-├── hooks/                       # Custom React hooks
-└── lib/                         # Utility functions
-```
-
-### Technology Stack
-
-- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
-- **UI Components**: shadcn/ui, Radix UI primitives
-- **Backend**: Next.js API Routes, Node.js
-- **Image Processing**: HTML5 Canvas API, node-canvas
-- **QR Generation**: qrcode library
-- **Notifications**: Sonner (toast notifications)
-- **Build System**: Next.js built-in bundler, TypeScript compiler
 
 ## 🔌 API Documentation
 
-### Base URL
-```
-https://domain.com/api
-```
-
-### Generate QR Code
-
-**Endpoint:** `POST /api/qr`
-
-**Content-Type:** `multipart/form-data`
-
-**Parameters:**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `text` | string | Yes | Text or URL to encode |
-| `format` | string | Yes | Output format (`png` or `jpg`) |
-| `foregroundColor` | string | No | Hex color for QR cells (default: `#000000`) |
-| `backgroundColor` | string | No | Hex color for background (default: `#ffffff`) |
-| `gradientColor` | string | No | End color for gradient |
-| `gradientDirection` | string | No | Gradient direction (`left-right`, `top-bottom`, `diagonal`, `none`) |
-| `cellShape` | string | No | Cell shape (`square`, `circle`, `rounded`, `margined`) |
-| `logo` | file | No | Logo image file (max 2MB) |
-| `margin` | number | No | Frame margin |
-| `errorCorrectionLevel` | string | No | Level (`L`, `M`, `Q`, `H`) |
-
-**Example Request:**
-
+### QR Code Generation
 ```bash
 curl -X POST https://domain.com/api/qr \\
   -F "text=https://example.com" \\
@@ -128,196 +77,166 @@ curl -X POST https://domain.com/api/qr \\
   -F "errorCorrectionLevel=M"
 ```
 
-**Response:**
-- **Success (200)**: Returns binary image data
-- **Error (400)**: Invalid parameters
-- **Error (500)**: Server error
-
-**Example with JavaScript:**
-
-```javascript
-const formData = new FormData();
-formData.append('text', 'https://example.com');
-formData.append('format', 'png');
-formData.append('foregroundColor', '#000000');
-formData.append('backgroundColor', '#ffffff');
-formData.append('cellShape', 'circle');
-formData.append('margin', '2')
-formData.append('errorCorrectionLevel', 'M')
-
-const response = await fetch('/api/qr', {
-  method: 'POST',
-  body: formData
-});
-
-if (response.ok) {
-  const blob = await response.blob();
-  const url = URL.createObjectURL(blob);
-  // Use the URL to display or download the QR code
-}
+### Session Management
 ```
+GET /api/session - Check existing session
+POST /api/session - Create new session
+```
+
+### History Management
+```
+GET /api/history?sessionId={id} - Get session history
+DELETE /api/history - Clear session history
+```
+
 
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
-- Node.js 18+ or Bun
-- npm, yarn, or bun package manager
+- Node.js 18+ 
+- Docker (for PostgreSQL)
+- Make (for development shortcuts)
 
-### Installation Steps
+### Local Development Setup
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/your-username/qr-code-generator.git
-cd qr-code-generator
-```
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd qr-code-generator
+   ```
 
-2. **Install dependencies:**
-```bash
-npm install
-# or
-yarn install
-# or
-bun install
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-3. **Run the development server:**
-```bash
-npm run dev
-# or
-yarn dev
-# or
-bun dev
-```
+3. **Set up the database**
+   ```bash
+   # Start PostgreSQL with Docker using the development shortcut
+   make build-up-dev
+   ```
 
-4. **Open your browser:**
-Navigate to `http://localhost:3000`
+4. **Configure environment variables**
+   Create a `.env` file:
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/qr_app_db"
+   ```
 
-### Build for Production
+5. **Run database migrations**
+   ```bash
+   npx prisma migrate dev
+   npx prisma generate
+   ```
 
-```bash
-npm run build
-npm start
-```
+6. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+7. **Open your browser**
+   Navigate to `http://localhost:3000`
+
+### Production Deployment
+
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+2. **Start the production server**
+   ```bash
+   npm start
+   ```
+
 
 ## 🧪 Development
 
-### Project Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript compiler check
+### Project Structure
+```
+.
+├── generated/
+├── hooks/
+├── prisma/
+├── public/
+├── src
+│   ├── app
+│   │   ├── api
+│   │   │   ├── history
+│   │   │   ├── qr
+│   │   │   │   ├── lib
+│   │   │   │   │   ├── renderers/
+│   │   │   │   │   ├── types/
+│   │   │   │   │   ├── QRCodeConfigurationBuilder.ts
+│   │   │   │   │   ├── QRCodeService.ts
+│   │   │   │   │   └── QRCodeRendererFactory.ts
+│   │   │   │   └── route.ts
+│   │   │   └── session
+│   │   └── ...
+│   ├── components/
+│   └── lib/
+└── ...
 ```
 
-### Adding New Cell Shapes
+### Available Scripts
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `make build-up-dev` - Start Docker PostgreSQL for development
 
-1. Create a new renderer class extending `AbstractQRCodeRenderer`:
+### Adding New Features
 
-```typescript
-// app/api/qr/lib/renderers/YourShapeRenderer.ts
-export class YourShapeRenderer extends AbstractQRCodeRenderer {
-  async render(matrix: QRCodeMatrix, config: QRCodeConfiguration): Promise<Buffer> {
-    // Implement your custom rendering logic
-  }
-}
-```
+1. **New Customization Options**: Add to `CustomizationPanel` component and update the `useQRGenerator` hook
+2. **New Cell Shapes**: Create a new renderer class extending `AbstractQRCodeRenderer`
+3. **New Export Formats**: Update the `QRCodeRendererFactory` and renderer implementations
+4. **Database Changes**: Update the Prisma schema and run migrations
 
-2. Update the factory:
+## Technologies Used
 
-```typescript
-// app/api/qr/lib/factories/QRCodeRendererFactory.ts
-case "yourshape":
-  return new YourShapeRenderer(format);
-```
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety and better developer experience
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Modern UI component library
+- **Sonner** - Toast notifications
+- **Lucide React** - Icon library
 
-3. Add the option to the frontend:
+### Backend
+- **Node.js** - JavaScript runtime
+- **Canvas** - HTML5 Canvas API for QR code rendering
+- **QRCode** - QR code generation library
+- **Prisma** - Database ORM
+- **PostgreSQL** - Primary database
 
-```tsx
-<SelectItem value="yourshape">Your Shape</SelectItem>
-```
+### Development Tools
+- **Docker** - Containerized PostgreSQL for development
+- **Make** - Development workflow automation
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
 
-### Adding New Output Formats
-
-1. Extend the `OutputFormat` type:
-
-```typescript
-export type OutputFormat = "png" | "jpg" | "webp"
-```
-
-2. Update the `canvasToBuffer` method in `AbstractQRCodeRenderer`
-
-3. Add the format option to the frontend
 
 ## 🤝 Contributing
 
-We welcome contributions! Please follow these guidelines:
-
-### Getting Started
-
-1. **Fork the repository**
-2. **Create a feature branch:**
-```bash
-git checkout -b feature/amazing-feature
-```
-
-3. **Make your changes**
-4. **Follow the coding standards:**
-   - Use TypeScript for all new code
-   - Follow the existing code style
-   - Add proper type definitions
-   - Include error handling
-
-5. **Test your changes:**
-```bash
-npm run build
-npm run lint
-```
-
-6. **Commit your changes:**
-```bash
-git commit -m "Add amazing feature"
-```
-
-7. **Push to your branch:**
-```bash
-git push origin feature/amazing-feature
-```
-
-8. **Open a Pull Request**
+1. Fork the repository
+2. Create a feature branch (`git switch -c feature/amazing-feature`)
+3. Make your changes following the existing code style
+4. Add tests for new functionality
+5. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
 ### Code Style Guidelines
+- Use TypeScript for all new code
+- Follow the existing component structure
+- Add proper type definitions
+- Include JSDoc comments for complex functions
+- Use meaningful variable and function names
 
-- **TypeScript**: Use strict typing, avoid `any`
-- **Naming**: Use descriptive names for variables and functions
-- **Comments**: Add JSDoc comments for public methods
-- **Error Handling**: Always handle errors gracefully
-- **Design Patterns**: Follow existing architectural patterns
-
-### Areas for Contribution
-
-- **New Cell Shapes**: Implement creative QR cell designs
-- **Export Formats**: Add support for WebP, TIFF, etc.
-- **Performance**: Optimize rendering performance
-- **UI/UX**: Improve user interface and experience
-- **Documentation**: Improve docs and add examples
-- **Testing**: Add unit and integration tests
-- **Accessibility**: Improve accessibility features
-
-### Reporting Issues
-
-Please use the GitHub issue tracker to report bugs or request features. Include:
-
-- Clear description of the issue
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if applicable
-- Environment details (OS, Node.js version, etc.)
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 ## 🙏 Acknowledgments
 
@@ -326,6 +245,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
 - [Next.js](https://nextjs.org/) - React framework
 - [Sonner](https://sonner.emilkowal.ski/) - Toast notifications
+
 
 ## 📞 Support
 
@@ -339,15 +259,3 @@ If you have questions or need help:
 ---
 
 **Made with ❤️ by Abel Maireg & Fiori Abebe**
-```
-
-This comprehensive README covers all aspects of your QR code generator project, including:
-
-- **Project overview** with feature highlights
-- **Detailed architecture** explanation with design patterns
-- **Complete API documentation** for external users
-- **Installation instructions** with system dependencies
-- **Development guidelines** and contribution process
-- **Build system** information and project structure
-
-The README is structured to be helpful for both end users wanting to use the API and developers wanting to contribute to the project.
