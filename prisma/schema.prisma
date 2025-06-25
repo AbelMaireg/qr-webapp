@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model client_sessions {
+  id        String   @id @default(uuid())
+  sessionId String   @unique
+  createdAt DateTime @default(now())
+}
+
+model qrc_gen_logs {
+  id                String   @id @default(uuid())
+  status            Status
+  text              String
+  size              Int
+  foregroundColor   String
+  backgroundColor   String
+  cellShape         String
+  gradientColor     String
+  gradientDirection String
+  margin            Int
+  errorCorrection   String
+  createdAt         DateTime @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([text])
+  @@index([size])
+  @@index([foregroundColor])
+  @@index([backgroundColor])
+  @@index([cellShape])
+  @@index([gradientColor])
+  @@index([gradientDirection])
+  @@index([margin])
+  @@index([errorCorrection])
+}
+
+enum Status {
+  SUCCESS
+  ERROR
+}
