@@ -26,6 +26,7 @@ model qrc_gen_logs {
   gradientDirection String
   margin            Int
   errorCorrection   String
+  sessionId         String?
   createdAt         DateTime @default(now())
 
   @@index([status])
