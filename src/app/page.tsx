@@ -8,8 +8,8 @@ import { CustomizationPanel } from "@/components/CustomizationPanel"
 import { PreviewPanel } from "@/components/PreviewPanel"
 import { FeatureCards } from "@/components/FeatureCards"
 import { PageHeader } from "@/components/PageHeader"
-import { useQRGenerator } from "../../hooks/useQRGenerator"
-import { useSession } from "../../hooks/useSession"
+import { useQRGenerator } from "@/hooks/useQRGenerator"
+import { useSession } from "@/hooks/useSession"
 
 export default function QRGenerator() {
   const {
