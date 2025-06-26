@@ -28,11 +28,3 @@ export async function createSession(): Promise<string> {
 
   return sessionId;
 }
-
-export async function getSessionHistory(sessionId: string) {
-  return await prisma.qrc_gen_logs.findMany({
-    where: { sessionId },
-    orderBy: { createdAt: "desc" },
-    take: 20,
-  });
-}

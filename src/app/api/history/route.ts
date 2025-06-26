@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getSessionHistory } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
@@ -14,7 +13,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const history = await getSessionHistory(sessionId);
+    const history = await prisma.qrc_gen_logs.findMany({
+      where: { sessionId },
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
     return NextResponse.json(history);
   } catch (error) {
     console.error("History fetch error:", error);
