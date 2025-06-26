@@ -29,7 +29,6 @@ export function useSession() {
       return;
     }
 
-    // Check for existing session
     try {
       const response = await fetch("/api/session", { method: "GET" });
       if (response.ok) {
@@ -40,7 +39,6 @@ export function useSession() {
             toast.success("Welcome back! Your session has been restored.");
           }
         } else {
-          // No existing session, create one
           await initializeSession();
         }
       }
@@ -74,7 +72,6 @@ export function useSession() {
     setShowCookieConsent(false);
     setIsSessionLoading(true);
 
-    // Check for existing session first, then create if needed
     try {
       const response = await fetch("/api/session", { method: "GET" });
       if (response.ok) {
