@@ -1,11 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getOrCreateSession, createSession } from "@/lib/session";
+import { getSession, createSession } from "@/lib/session";
 
 export async function GET(request: NextRequest) {
   try {
-    // Check for existing session first
-    const existingSessionId = await getOrCreateSession();
+    const existingSessionId = await getSession();
 
     if (existingSessionId) {
       return NextResponse.json({ sessionId: existingSessionId, isNew: false });
@@ -23,14 +22,12 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if session already exists
-    const existingSessionId = await getOrCreateSession();
+    const existingSessionId = await getSession();
 
     if (existingSessionId) {
       return NextResponse.json({ sessionId: existingSessionId, isNew: false });
     }
 
-    // Create new session only if none exists
     const sessionId = await createSession();
 
     const cookieStore = await cookies();

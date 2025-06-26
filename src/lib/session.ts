@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "./prisma";
 
-export async function getOrCreateSession(): Promise<string | null> {
+export async function getSession(): Promise<string | null> {
   const cookieStore = await cookies();
   const sessionId = cookieStore.get("qr-session-id")?.value;
 
