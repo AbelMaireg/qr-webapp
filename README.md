@@ -107,7 +107,7 @@ DELETE /api/history - Clear session history
 
 2. **Install dependencies**
    ```bash
-   npm install
+   bun install
    ```
 
 3. **Set up the database**
@@ -130,7 +130,7 @@ DELETE /api/history - Clear session history
 
 6. **Start the development server**
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 7. **Open your browser**
@@ -140,12 +140,12 @@ DELETE /api/history - Clear session history
 
 1. **Build the application**
    ```bash
-   npm run build
+   bun run build
    ```
 
 2. **Start the production server**
    ```bash
-   npm start
+   bun start
    ```
 
 
@@ -178,10 +178,10 @@ DELETE /api/history - Clear session history
 ```
 
 ### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `bun dev`     - Start development server
+- `bun build`   - Build for production
+- `bun start`   - Start production server
+- `bun lint`    - Run ESLint
 - `make build-up-dev` - Start Docker PostgreSQL for development
 
 ### Adding New Features
