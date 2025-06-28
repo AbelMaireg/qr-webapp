@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Loader2, Upload, Palette, QrCode } from "lucide-react"
+import { Loader2, Upload, Palette, QrCode, Info } from "lucide-react"
 import type { QRCodeErrorCorrectionLevel } from "qrcode"
 
 type CellShape = "square" | "circle" | "rounded" | "margined"
@@ -227,7 +227,21 @@ export function CustomizationPanel({
         </div>
 
         <div className="space-y-2">
-          <Label>Logo (Optional)</Label>
+          <div className="flex items-center gap-2">
+            <Label>Logo (Optional)</Label>
+            <div className="group relative">
+              <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                <div className="text-center">
+                  <div className="font-medium">Logo Tips:</div>
+                  <div>• Use High error correction for logos</div>
+                  <div>• Keep logo simple and high contrast</div>
+                  <div>• Max file size: 2MB</div>
+                </div>
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+              </div>
+            </div>
+          </div>
           <div className="space-y-2">
             <Input ref={fileInputRef} type="file" accept="image/*" onChange={onLogoUpload} className="hidden" />
             <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full">
