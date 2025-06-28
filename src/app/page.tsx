@@ -10,6 +10,7 @@ import { FeatureCards } from "@/components/FeatureCards"
 import { PageHeader } from "@/components/PageHeader"
 import { useQRGenerator } from "@/hooks/useQRGenerator"
 import { useSession } from "@/hooks/useSession"
+import { useState } from "react"
 
 export default function QRGenerator() {
   const {
@@ -44,12 +45,17 @@ export default function QRGenerator() {
 
   const { sessionId, showCookieConsent, isSessionLoading, handleCookieAccept, handleCookieDecline } = useSession()
 
+  const [isHistorySidebarOpen, setIsHistorySidebarOpen] = useState(true)
+
   return (
     <>
-      {showCookieConsent && <CookieConsent onAcceptAction={handleCookieAccept} onDeclineAction={handleCookieDecline} />}
+      {showCookieConsent && <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />}
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-        <div className="container mx-auto max-w-full pl-96 pr-64">
+        <div
+          className={`container mx-auto max-w-full transition-all duration-300 ${isHistorySidebarOpen ? "pl-96" : "pl-16"
+            } pr-64`}
+        >
           <PageHeader />
 
           <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
@@ -85,17 +91,22 @@ export default function QRGenerator() {
           </div>
 
           {/* History Sidebar */}
-          <div className="fixed top-4 left-4 w-88 h-[calc(100vh-2rem)] z-40">
-            {isSessionLoading ? (
+          {isSessionLoading ? (
+            <div className="fixed top-4 left-4 w-88 h-[calc(100vh-2rem)] z-40">
               <Card className="h-full">
                 <CardContent className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                 </CardContent>
               </Card>
-            ) : (
-              <HistorySidebar sessionId={sessionId} onLoadHistoryAction={loadFromHistory} />
-            )}
-          </div>
+            </div>
+          ) : (
+            <HistorySidebar
+              sessionId={sessionId}
+              onLoadHistory={loadFromHistory}
+              isOpen={isHistorySidebarOpen}
+              onToggle={() => setIsHistorySidebarOpen(!isHistorySidebarOpen)}
+            />
+          )}
 
           <FeatureCards />
         </div>
