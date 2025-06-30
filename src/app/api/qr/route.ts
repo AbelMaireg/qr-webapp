@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     try {
       await prisma.qrc_gen_logs.create({
         data: {
-          status: "SUCCESS",
+          status: "ERROR",
           text,
           size: 512,
           foregroundColor: foregroundColor || "#000000",
