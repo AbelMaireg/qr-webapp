@@ -3,8 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { CookieConsent } from "@/components/CookieConsent"
 import { HistorySidebar } from "@/components/HistorySidebar"
-import { QRCodeForm } from "@/components/QRCodeForm"
-import { CustomizationPanel } from "@/components/CustomizationPanel"
+import { CombinedPanel } from "@/components/CombinedPanel"
 import { PreviewPanel } from "@/components/PreviewPanel"
 import { FeatureSectionAds } from "@/components/GoogleAdsense"
 import { AdPopup } from "@/components/AdPopup"
@@ -53,7 +52,7 @@ export default function QRGenerator() {
 
   return (
     <>
-      {showCookieConsent && <CookieConsent onAcceptAction={handleCookieAccept} onDeclineAction={handleCookieDecline} />}
+      {showCookieConsent && <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />}
 
       <AdPopup isOpen={showAdPopup} onClose={handleAdPopupClose} onContinue={handleAdPopupContinue} />
 
@@ -87,14 +86,12 @@ export default function QRGenerator() {
             </div>
           )}
 
-          {/* Main Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+          {/* Main Grid - Now 2 columns instead of 3 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
             <div className="lg:col-span-1">
-              <QRCodeForm text={text} setText={setText} />
-            </div>
-
-            <div className="lg:col-span-1">
-              <CustomizationPanel
+              <CombinedPanel
+                text={text}
+                setText={setText}
                 foregroundColor={foregroundColor}
                 setForegroundColor={setForegroundColor}
                 backgroundColor={backgroundColor}
