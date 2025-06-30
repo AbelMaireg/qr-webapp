@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
+import { ThemeProvider } from "@/components/theme-provider"
 import Script from "next/script"
 
 export const metadata: Metadata = {
@@ -17,8 +18,9 @@ export default function RootLayout({
   const publisherId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google AdSense - Only load if publisher ID is configured */}
         {publisherId && (
           <Script
             async
@@ -29,8 +31,10 @@ export default function RootLayout({
         )}
       </head>
       <body>
-        {children}
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

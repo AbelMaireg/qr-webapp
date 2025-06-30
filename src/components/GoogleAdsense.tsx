@@ -42,10 +42,10 @@ export function GoogleAdsense({
     return (
       <div
         style={style}
-        className="flex items-center justify-center bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg"
+        className="flex items-center justify-center bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg"
       >
         <div className="text-center p-4">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
             {process.env.NODE_ENV === "development" ? "AdSense Publisher ID not configured" : "Advertisement"}
           </p>
         </div>
@@ -68,10 +68,10 @@ export function GoogleAdsense({
 // Component for the feature section replacement
 export function FeatureSectionAds() {
   return (
-    <div className="mt-12 max-w-7xl mx-auto">
+    <div className="mt-12 max-w-7xl mx-auto px-4">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Sponsored</h2>
-        <p className="text-gray-600">Support our free QR code generator</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Sponsored</h2>
+        <p className="text-gray-600 dark:text-gray-300">Support our free QR code generator</p>
       </div>
 
       {/* Large banner ad */}
@@ -89,9 +89,9 @@ export function FeatureSectionAds() {
         />
       </div>
 
-      {/* Grid of smaller ads */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+      {/* Grid of smaller ads - responsive */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <GoogleAdsense
             adSlot="2345678901"
             style={{
@@ -102,7 +102,7 @@ export function FeatureSectionAds() {
           />
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <GoogleAdsense
             adSlot="3456789012"
             style={{
@@ -113,7 +113,7 @@ export function FeatureSectionAds() {
           />
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 md:col-span-2 lg:col-span-1">
+        <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 md:col-span-2 lg:col-span-1">
           <GoogleAdsense
             adSlot="4567890123"
             style={{

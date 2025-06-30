@@ -49,7 +49,7 @@ export default function QRGenerator() {
 
   const { sessionId, showCookieConsent, isSessionLoading, handleCookieAccept, handleCookieDecline } = useSession()
 
-  const [isHistorySidebarOpen, setIsHistorySidebarOpen] = useState(true)
+  const [isHistorySidebarOpen, setIsHistorySidebarOpen] = useState(false)
 
   return (
     <>
@@ -57,62 +57,74 @@ export default function QRGenerator() {
 
       <AdPopup isOpen={showAdPopup} onClose={handleAdPopupClose} onContinue={handleAdPopupContinue} />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-        <div
-          className={`container mx-auto max-w-full transition-all duration-300 ${isHistorySidebarOpen ? "pl-96" : "pl-16"
-            } pr-64`}
-        >
+      {/* History Sidebar */}
+      {!isSessionLoading && (
+        <HistorySidebar
+          sessionId={sessionId}
+          onLoadHistory={loadFromHistory}
+          isOpen={isHistorySidebarOpen}
+          onToggle={() => setIsHistorySidebarOpen(!isHistorySidebarOpen)}
+        />
+      )}
+
+      {/* Main Content */}
+      <div
+        className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-all duration-300 ${isHistorySidebarOpen ? "lg:ml-80 xl:ml-96" : "ml-0"
+          }`}
+      >
+        <div className="container mx-auto px-4 lg:px-8">
           <PageHeader />
 
-          <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
-            <QRCodeForm text={text} setText={setText} />
-
-            <CustomizationPanel
-              foregroundColor={foregroundColor}
-              setForegroundColor={setForegroundColor}
-              backgroundColor={backgroundColor}
-              setBackgroundColor={setBackgroundColor}
-              gradientColor={gradientColor}
-              setGradientColor={setGradientColor}
-              gradientDirection={gradientDirection}
-              setGradientDirection={setGradientDirection}
-              cellShape={cellShape}
-              setCellShape={setCellShape}
-              errorCorrectionLevel={errorCorrectionLevel}
-              setErrorCorrectionLevel={setErrorCorrectionLevel}
-              format={format}
-              setFormat={setFormat}
-              margin={margin}
-              setMargin={setMargin}
-              logoFile={logoFile}
-              logoPreview={logoPreview}
-              onLogoUpload={handleLogoUpload}
-              onRemoveLogo={removeLogo}
-              onGenerateQRCode={generateQRCode}
-              isGenerating={isGenerating}
-              canGenerate={text.trim().length > 0}
-            />
-
-            <PreviewPanel qrCodeUrl={qrCodeUrl} format={format} onDownload={downloadQRCode} />
-          </div>
-
-          {/* History Sidebar */}
-          {isSessionLoading ? (
-            <div className="fixed top-4 left-4 w-88 h-[calc(100vh-2rem)] z-40">
-              <Card className="h-full">
+          {/* Session Loading State */}
+          {isSessionLoading && (
+            <div className="flex justify-center mb-8">
+              <Card className="w-full max-w-md">
                 <CardContent className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mr-3"></div>
+                  <span className="text-sm text-muted-foreground">Loading session...</span>
                 </CardContent>
               </Card>
             </div>
-          ) : (
-            <HistorySidebar
-              sessionId={sessionId}
-              onLoadHistory={loadFromHistory}
-              isOpen={isHistorySidebarOpen}
-              onToggle={() => setIsHistorySidebarOpen(!isHistorySidebarOpen)}
-            />
           )}
+
+          {/* Main Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+            <div className="lg:col-span-1">
+              <QRCodeForm text={text} setText={setText} />
+            </div>
+
+            <div className="lg:col-span-1">
+              <CustomizationPanel
+                foregroundColor={foregroundColor}
+                setForegroundColor={setForegroundColor}
+                backgroundColor={backgroundColor}
+                setBackgroundColor={setBackgroundColor}
+                gradientColor={gradientColor}
+                setGradientColor={setGradientColor}
+                gradientDirection={gradientDirection}
+                setGradientDirection={setGradientDirection}
+                cellShape={cellShape}
+                setCellShape={setCellShape}
+                errorCorrectionLevel={errorCorrectionLevel}
+                setErrorCorrectionLevel={setErrorCorrectionLevel}
+                format={format}
+                setFormat={setFormat}
+                margin={margin}
+                setMargin={setMargin}
+                logoFile={logoFile}
+                logoPreview={logoPreview}
+                onLogoUpload={handleLogoUpload}
+                onRemoveLogo={removeLogo}
+                onGenerateQRCode={generateQRCode}
+                isGenerating={isGenerating}
+                canGenerate={text.trim().length > 0}
+              />
+            </div>
+
+            <div className="lg:col-span-1">
+              <PreviewPanel qrCodeUrl={qrCodeUrl} format={format} onDownload={downloadQRCode} />
+            </div>
+          </div>
 
           {/* Google AdSense ads */}
           <FeatureSectionAds />
