@@ -53,7 +53,7 @@ export default function QRGenerator() {
 
   return (
     <>
-      {showCookieConsent && <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />}
+      {showCookieConsent && <CookieConsent onAcceptAction={handleCookieAccept} onDeclineAction={handleCookieDecline} />}
 
       <AdPopup isOpen={showAdPopup} onClose={handleAdPopupClose} onContinue={handleAdPopupContinue} />
 
@@ -114,7 +114,7 @@ export default function QRGenerator() {
             />
           )}
 
-          {/* Replace FeatureCards with Google AdSense ads */}
+          {/* Google AdSense ads */}
           <FeatureSectionAds />
         </div>
       </div>

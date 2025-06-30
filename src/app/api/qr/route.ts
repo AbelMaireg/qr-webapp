@@ -66,8 +66,8 @@ export async function POST(request: NextRequest) {
           cellShape: cellShape || "square",
           gradientColor: gradientColor || "",
           gradientDirection: gradientDirection || "none",
-          margin: 4,
-          errorCorrection: "M",
+          margin: margin,
+          errorCorrection: errorCorrectionLevel,
           sessionId,
         },
       });
