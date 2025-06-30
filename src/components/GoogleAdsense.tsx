@@ -17,20 +17,47 @@ export function GoogleAdsense({
   fullWidthResponsive = true,
   style = { display: "block" },
 }: GoogleAdsenseProps) {
+  const publisherId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID
+
   useEffect(() => {
+    if (!publisherId) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          "Google AdSense Publisher ID not found. Please set NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID in your environment variables.",
+        )
+      }
+      return
+    }
+
     try {
       // @ts-ignore
       ; (window.adsbygoogle = window.adsbygoogle || []).push({})
     } catch (err) {
       console.error("AdSense error:", err)
     }
-  }, [])
+  }, [publisherId])
+
+  // Don't render ads if publisher ID is not set
+  if (!publisherId) {
+    return (
+      <div
+        style={style}
+        className="flex items-center justify-center bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg"
+      >
+        <div className="text-center p-4">
+          <p className="text-gray-500 text-sm">
+            {process.env.NODE_ENV === "development" ? "AdSense Publisher ID not configured" : "Advertisement"}
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <ins
       className="adsbygoogle"
       style={style}
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX" // Replace with your AdSense publisher ID
+      data-ad-client={publisherId}
       data-ad-slot={adSlot}
       data-ad-format={adFormat}
       data-full-width-responsive={fullWidthResponsive}
@@ -100,4 +127,3 @@ export function FeatureSectionAds() {
     </div>
   )
 }
-
