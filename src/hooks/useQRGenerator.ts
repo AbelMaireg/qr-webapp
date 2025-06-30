@@ -13,6 +13,7 @@ export function useQRGenerator() {
   const [text, setText] = useState("");
   const [format, setFormat] = useState("png");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showAdPopup, setShowAdPopup] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [foregroundColor, setForegroundColor] = useState("#000000");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
@@ -40,6 +41,12 @@ export function useQRGenerator() {
       }
 
       setLogoFile(file);
+      // Automatically set error correction to High when logo is uploaded
+      setErrorCorrectionLevel("H");
+      toast.success(
+        "Logo uploaded! Error correction level set to High for better logo visibility.",
+      );
+
       const reader = new FileReader();
       reader.onload = (e) => {
         setLogoPreview(e.target?.result as string);
@@ -54,6 +61,12 @@ export function useQRGenerator() {
       return;
     }
 
+    // Show ad popup first
+    setShowAdPopup(true);
+  };
+
+  const handleAdPopupContinue = async () => {
+    setShowAdPopup(false);
     setIsGenerating(true);
 
     try {
@@ -93,6 +106,10 @@ export function useQRGenerator() {
     }
   };
 
+  const handleAdPopupClose = () => {
+    setShowAdPopup(false);
+  };
+
   const downloadQRCode = () => {
     if (!qrCodeUrl) return;
 
@@ -128,6 +145,7 @@ export function useQRGenerator() {
     format,
     setFormat,
     isGenerating,
+    showAdPopup,
     qrCodeUrl,
     foregroundColor,
     setForegroundColor,
@@ -148,6 +166,8 @@ export function useQRGenerator() {
     // Actions
     handleLogoUpload,
     generateQRCode,
+    handleAdPopupContinue,
+    handleAdPopupClose,
     downloadQRCode,
     removeLogo,
     loadFromHistory,

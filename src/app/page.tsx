@@ -6,7 +6,8 @@ import { HistorySidebar } from "@/components/HistorySidebar"
 import { QRCodeForm } from "@/components/QRCodeForm"
 import { CustomizationPanel } from "@/components/CustomizationPanel"
 import { PreviewPanel } from "@/components/PreviewPanel"
-import { FeatureCards } from "@/components/FeatureCards"
+import { FeatureSectionAds } from "@/components/GoogleAdsense"
+import { AdPopup } from "@/components/AdPopup"
 import { PageHeader } from "@/components/PageHeader"
 import { useQRGenerator } from "@/hooks/useQRGenerator"
 import { useSession } from "@/hooks/useSession"
@@ -19,6 +20,7 @@ export default function QRGenerator() {
     format,
     setFormat,
     isGenerating,
+    showAdPopup,
     qrCodeUrl,
     foregroundColor,
     setForegroundColor,
@@ -38,6 +40,8 @@ export default function QRGenerator() {
     setErrorCorrectionLevel,
     handleLogoUpload,
     generateQRCode,
+    handleAdPopupContinue,
+    handleAdPopupClose,
     downloadQRCode,
     removeLogo,
     loadFromHistory,
@@ -50,6 +54,8 @@ export default function QRGenerator() {
   return (
     <>
       {showCookieConsent && <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />}
+
+      <AdPopup isOpen={showAdPopup} onClose={handleAdPopupClose} onContinue={handleAdPopupContinue} />
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
         <div
@@ -108,7 +114,8 @@ export default function QRGenerator() {
             />
           )}
 
-          <FeatureCards />
+          {/* Replace FeatureCards with Google AdSense ads */}
+          <FeatureSectionAds />
         </div>
       </div>
     </>
