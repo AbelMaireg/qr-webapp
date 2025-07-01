@@ -8,6 +8,7 @@ import { PreviewPanel } from "@/components/PreviewPanel"
 import { FeatureSectionAds } from "@/components/GoogleAdsense"
 import { AdPopup } from "@/components/AdPopup"
 import { PageHeader } from "@/components/PageHeader"
+import { SEOOptimizedContent } from "@/components/SEOOptimizedContent"
 import { useQRGenerator } from "@/hooks/useQRGenerator"
 import { useSession } from "@/hooks/useSession"
 import { useState } from "react"
@@ -52,7 +53,7 @@ export default function QRGenerator() {
 
   return (
     <>
-      {showCookieConsent && <CookieConsent onAcceptAction={handleCookieAccept} onDeclineAction={handleCookieDecline} />}
+      {showCookieConsent && <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />}
 
       <AdPopup isOpen={showAdPopup} onClose={handleAdPopupClose} onContinue={handleAdPopupContinue} />
 
@@ -71,7 +72,7 @@ export default function QRGenerator() {
         className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-all duration-300 ${isHistorySidebarOpen ? "lg:ml-80 xl:ml-96" : "ml-0"
           }`}
       >
-
+        {/* Add padding to account for fixed theme toggle */}
         <div className="container mx-auto px-4 lg:px-8 pr-16">
           <PageHeader />
 
@@ -88,7 +89,10 @@ export default function QRGenerator() {
           )}
 
           {/* Main Grid - Now 2 columns instead of 3 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          <section
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto"
+            aria-label="QR Code Generator Interface"
+          >
             <div className="lg:col-span-1">
               <CombinedPanel
                 text={text}
@@ -122,10 +126,15 @@ export default function QRGenerator() {
             <div className="lg:col-span-1">
               <PreviewPanel qrCodeUrl={qrCodeUrl} format={format} onDownload={downloadQRCode} />
             </div>
-          </div>
+          </section>
+
+          {/* SEO Content */}
+          <SEOOptimizedContent />
 
           {/* Google AdSense ads */}
-          <FeatureSectionAds />
+          <section aria-label="Sponsored Content">
+            <FeatureSectionAds />
+          </section>
         </div>
       </div>
     </>
