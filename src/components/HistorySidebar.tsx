@@ -71,7 +71,7 @@ export function HistorySidebar({ sessionId, onLoadHistory, isOpen, onToggle }: H
         setHistory([])
         toast.success("History cleared successfully")
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to clear history")
     }
   }

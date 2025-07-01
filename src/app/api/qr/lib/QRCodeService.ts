@@ -1,7 +1,4 @@
-import QRCode, {
-  ErrorCorrectionLevel,
-  QRCodeErrorCorrectionLevel,
-} from "qrcode";
+import QRCode, { QRCodeErrorCorrectionLevel } from "qrcode";
 import { QRCodeConfiguration } from "./types/QRCodeConfiguration";
 import { AbstractQRCodeRenderer } from "./renderers/AbstractQRCodeRenderer";
 import { QRCodeRendererFactory } from "./QRCodeRendererFactory";
