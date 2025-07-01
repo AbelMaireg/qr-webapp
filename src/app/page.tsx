@@ -52,7 +52,7 @@ export default function QRGenerator() {
 
   return (
     <>
-      {showCookieConsent && <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />}
+      {showCookieConsent && <CookieConsent onAcceptAction={handleCookieAccept} onDeclineAction={handleCookieDecline} />}
 
       <AdPopup isOpen={showAdPopup} onClose={handleAdPopupClose} onContinue={handleAdPopupContinue} />
 
@@ -71,7 +71,8 @@ export default function QRGenerator() {
         className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-all duration-300 ${isHistorySidebarOpen ? "lg:ml-80 xl:ml-96" : "ml-0"
           }`}
       >
-        <div className="container mx-auto px-4 lg:px-8">
+
+        <div className="container mx-auto px-4 lg:px-8 pr-16">
           <PageHeader />
 
           {/* Session Loading State */}
