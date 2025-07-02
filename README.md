@@ -1,103 +1,43 @@
 # Advanced QR Code Generator
 
-A modern, feature-rich QR code generator built with Next.js 15, featuring advanced customization options, session management, and a clean modular architecture.
+A modern, feature-rich QR code generator built with Next.js 15, TypeScript, and Tailwind CSS. Create customizable QR codes with colors, gradients, logos, and various shapes while maintaining high quality and performance.
 
+## ✨ Features
 
-## 🚀 Features
-
-### Core Functionality
-- **Text/URL Encoding**: Generate QR codes from any text or URL
-- **Multiple Output Formats**: Export as PNG or JPG
-- **High Resolution**: Generate crisp, high-quality QR codes (512x512px)
-
-### Advanced Customization
+### 🎨 Customization Options
 - **Custom Colors**: Choose any foreground and background colors
-- **Gradient Support**: Create beautiful gradients (left-right, top-bottom, diagonal)
-- **Cell Shapes**: Square, Circle, Rounded, or Margined cell styles
-- **Logo Embedding**: Add your brand logo to the center of QR codes
-- **Adjustable Margins**: Control spacing around the QR code
+- **Gradients**: Apply beautiful gradients in multiple directions (left-right, top-bottom, diagonal)
+- **Cell Shapes**: Square, circle, rounded, or margined cell styles
+- **Logo Embedding**: Add your brand logo to QR codes with automatic error correction adjustment
 - **Error Correction Levels**: Low (7%), Medium (15%), Quartile (25%), High (30%)
+- **Output Formats**: High-quality PNG and JPG downloads
+- **Custom Margins**: Adjustable spacing around QR codes
 
-### User Experience
-- **Session Management**: Save and restore user sessions with cookie consent
-- **Generation History**: View and reload previous QR code configurations
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Real-time Preview**: See your QR code update as you customize
-- **Toast Notifications**: Clear feedback for all user actions
+### 🚀 Advanced Features
+- **Generation History**: Save and reload previous QR code configurations
+- **Session Management**: Persistent sessions with cookie consent
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **Dark/Light Mode**: Automatic theme switching with system preference
+- **SEO Optimized**: Complete meta tags, structured data, and sitemap
+- **Google AdSense Integration**: Monetization support with environment-based configuration
+- **Real-time Preview**: Instant QR code generation and preview
 
-### Technical Features
-- **Modular Architecture**: Clean, maintainable component structure
-- **Custom Hooks**: Reusable logic with `useQRGenerator` and `useSession`
-- **Type Safety**: Full TypeScript implementation
-- **Design Patterns**: Builder, Strategy, and Factory patterns in backend
-- **Database Integration**: PostgreSQL with Prisma ORM
-- **Canvas Rendering**: High-performance QR code generation using HTML5 Canvas
+### 🛠 Technical Features
+- **Next.js 15**: Latest App Router with server components
+- **TypeScript**: Full type safety throughout the application
+- **Prisma ORM**: Database management with PostgreSQL
+- **Canvas Rendering**: High-quality QR code generation using HTML5 Canvas
+- **Modular Architecture**: Clean, maintainable code structure
+- **Performance Optimized**: Fast loading and generation times
 
-
-## 🏗️ Project Architecture
-
-### Frontend Components
-- **QRCodeForm**: Text input component
-- **CustomizationPanel**: All customization controls
-- **PreviewPanel**: QR code preview and download
-- **HistorySidebar**: Session history management
-- **FeatureCards**: Feature showcase
-- **PageHeader**: Page title and navigation
-
-### Backend Services
-- **QRCodeService**: Core QR code generation logic
-- **QRCodeConfigurationBuilder**: Builder pattern for configuration
-- **QRCodeRendererFactory**: Factory pattern for different renderers
-- **AbstractQRCodeRenderer**: Base class for rendering strategies
-
-### Rendering Strategies
-- **SquareRenderer**: Standard square cells with margin support
-- **CircleRenderer**: Circular cell rendering
-- **RoundedRenderer**: Rounded corner cells with spacing
-
-### Database Schema
-- **client_sessions**: User session management
-- **qrc_gen_logs**: QR code generation history and analytics
-
-
-## 🔌 API Documentation
-
-### QR Code Generation
-```bash
-curl -X POST https://domain.com/api/qr \\
-  -F "text=https://example.com" \\
-  -F "format=png" \\
-  -F "foregroundColor=#000000" \\
-  -F "backgroundColor=#ffffff" \\
-  -F "gradientColor=#ff0000" \\
-  -F "gradientDirection=left-right" \\
-  -F "cellShape=circle" \\
-  -F "logo=@logo.png" \\
-  -F "margin=2" \\
-  -F "errorCorrectionLevel=M"
-```
-
-### Session Management
-```
-GET /api/session - Check existing session
-POST /api/session - Create new session
-```
-
-### History Management
-```
-GET /api/history?sessionId={id} - Get session history
-DELETE /api/history - Clear session history
-```
-
-
-## 🛠️ Installation & Setup
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+ 
-- Docker (for PostgreSQL)
-- Make (for development shortcuts)
+- PostgreSQL database
+- npm or yarn package manager
 
-### Local Development Setup
+### Installation
 
 1. **Clone the repository**
    ```bash
@@ -107,17 +47,17 @@ DELETE /api/history - Clear session history
 
 2. **Install dependencies**
    ```bash
-   bun install
+   npm install
+   # or
+   yarn install
    ```
 
-3. **Set up the database**
+3. **Set up environment variables**
    ```bash
-   # Start PostgreSQL with Docker using the development shortcut
-   make build-up-dev
+   cp .env.example .env.local
    ```
-
-4. **Configure environment variables**
-   Create a `.env` file:
+   
+   Configure your environment variables:
    ```env
     DATABASE_URL="postgresql://dbusername:password@localhost:5432/qr_app_db?schema=public"
     NODE_ENV="development"
@@ -135,140 +75,198 @@ DELETE /api/history - Clear session history
     NEXT_PUBLIC_YAHOO_VERIFICATION=your-yahoo-verification-code
    ```
 
-5. **Run database migrations**
+4. **Set up the database**
    ```bash
-   npx prisma migrate dev
+   # Start PostgreSQL (using Docker Compose)
+   make up
+   
+   # Generate Prisma client
    npx prisma generate
+   
+   # Run database migrations
+   npx prisma db push
    ```
 
-6. **Start the development server**
+5. **Start the development server**
    ```bash
-   bun run dev
+   npm run dev
+   # or
+   yarn dev
    ```
 
-7. **Open your browser**
-   Navigate to `http://localhost:3000`
+6. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-### Production Deployment
+## 🐳 Docker Development
 
-1. **Build the application**
-   ```bash
-   bun run build
-   ```
+Use the included Docker Compose setup for easy development:
 
-2. **Start the production server**
-   ```bash
-   bun start
-   ```
+```bash
+# Start PostgreSQL database
+make up
 
+# Stop database
+make down
 
-## 🧪 Development
+# Build and start
+make build-up
+```
+
+## 📖 Usage
+
+### Basic QR Code Generation
+
+1. **Enter Content**: Type your text, URL, or any content in the input field
+2. **Customize Appearance**: Choose colors, gradients, and cell shapes
+3. **Add Logo** (Optional): Upload your brand logo for professional QR codes
+4. **Generate**: Click "Generate QR Code" to create your custom QR code
+5. **Download**: Save your QR code in PNG or JPG format
+
+### Advanced Features
+
+#### History Management
+- **Auto-save**: Generated QR codes are automatically saved to history
+- **Quick Reload**: Click any history item to reload its configuration
+- **Session Persistence**: History persists across browser sessions
+- **Privacy Control**: Cookie consent required for history features
+
+#### Logo Integration
+- **Automatic Optimization**: Error correction level automatically set to High when logo is added
+- **Size Validation**: Maximum 2MB file size with format validation
+- **Professional Appearance**: Logos are centered with proper padding
+
+#### Customization Tips
+- **High Error Correction**: Use High (30%) level for QR codes with logos
+- **Gradient Effects**: Experiment with different gradient directions for visual appeal
+- **Color Contrast**: Ensure sufficient contrast between foreground and background
+- **Margin Settings**: Add margins for better scanning reliability
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_SITE_URL` | Your site's URL for SEO | Yes |
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID` | Google AdSense Publisher ID | No |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics ID | No |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Google Search Console verification | No |
+
+### Database Schema
+
+The application uses PostgreSQL with the following main tables:
+- `client_sessions`: User session management
+- `qrc_gen_logs`: QR code generation history and analytics
+
+### AdSense Integration
+
+Configure Google AdSense for monetization:
+1. Set up your AdSense account
+2. Add your Publisher ID to environment variables
+3. Ad slots are pre-configured in the application
+4. Ads display in feature sections and generation popup
+
+## 🏗 Architecture
 
 ### Project Structure
 ```
-.
-├── generated/
-├── hooks/
-├── prisma/
-├── public/
-├── src
-│   ├── app
-│   │   ├── api
-│   │   │   ├── history
-│   │   │   ├── qr
-│   │   │   │   ├── lib
-│   │   │   │   │   ├── renderers/
-│   │   │   │   │   ├── types/
-│   │   │   │   │   ├── QRCodeConfigurationBuilder.ts
-│   │   │   │   │   ├── QRCodeService.ts
-│   │   │   │   │   └── QRCodeRendererFactory.ts
-│   │   │   │   └── route.ts
-│   │   │   └── session
-│   │   └── ...
-│   ├── components/
-│   └── lib/
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx          # Home page
+│   ├── robots.ts         # SEO robots.txt
+│   └── sitemap.ts        # SEO sitemap
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   └── ...               # Custom components
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility libraries
 └── ...
 ```
 
-### Available Scripts
-- `bun dev`     - Start development server
-- `bun build`   - Build for production
-- `bun start`   - Start production server
-- `bun lint`    - Run ESLint
-- `make build-up-dev` - Start Docker PostgreSQL for development
+### Key Components
+- **QRCodeService**: Core QR code generation logic
+- **Renderers**: Different cell shape rendering (Square, Circle, Rounded)
+- **ConfigurationBuilder**: QR code configuration management
+- **HistorySidebar**: Session-based history management
+- **ThemeProvider**: Dark/light mode support
 
-### Adding New Features
+## 🎨 Customization
 
-1. **New Customization Options**: Add to `CustomizationPanel` component and update the `useQRGenerator` hook
-2. **New Cell Shapes**: Create a new renderer class extending `AbstractQRCodeRenderer`
-3. **New Export Formats**: Update the `QRCodeRendererFactory` and renderer implementations
-4. **Database Changes**: Update the Prisma schema and run migrations
+### Adding New Cell Shapes
+1. Create a new renderer in `src/app/api/qr/lib/renderers/`
+2. Extend `AbstractQRCodeRenderer`
+3. Register in `QRCodeRendererFactory`
 
-## Technologies Used
+### Modifying Color Schemes
+- Update `tailwind.config.ts` for new color variables
+- Modify `globals.css` for theme definitions
+- Add new color options in customization panel
 
-### Frontend
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type safety and better developer experience
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - Modern UI component library
-- **Sonner** - Toast notifications
-- **Lucide React** - Icon library
+### SEO Configuration
+- Update meta tags in `layout.tsx`
+- Modify structured data in the layout
+- Configure sitemap URLs in `sitemap.ts`
 
-### Backend
-- **Node.js** - JavaScript runtime
-- **Canvas** - HTML5 Canvas API for QR code rendering
-- **QRCode** - QR code generation library
-- **Prisma** - Database ORM
-- **PostgreSQL** - Primary database
+## 🚀 Deployment
 
-### Development Tools
-- **Docker** - Containerized PostgreSQL for development
-- **Make** - Development workflow automation
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
+### Vercel (Recommended)
+1. Connect your GitHub repository to Vercel
+2. Configure environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
 
+### Manual Deployment
+```bash
+# Build the application
+npm run build
+
+# Start production server
+npm start
+```
+
+### Database Setup
+- Set up PostgreSQL database
+- Run Prisma migrations
+- Configure connection string in environment variables
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git switch -c feature/amazing-feature`)
-3. Make your changes following the existing code style
-4. Add tests for new functionality
-5. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-### Code Style Guidelines
-- Use TypeScript for all new code
-- Follow the existing component structure
-- Add proper type definitions
-- Include JSDoc comments for complex functions
-- Use meaningful variable and function names
+### Development Guidelines
+- Follow TypeScript best practices
+- Use ESLint and Prettier for code formatting
+- Write meaningful commit messages
+- Test your changes thoroughly
+- Update documentation as needed
 
-
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-
 ## 🙏 Acknowledgments
 
-- [qrcode](https://github.com/soldair/node-qrcode) - QR code generation library
-- [canvas](https://github.com/Automattic/node-canvas) - HTML5 Canvas API for Node.js
-- [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
 - [Next.js](https://nextjs.org/) - React framework
-- [Sonner](https://sonner.emilkowal.ski/) - Toast notifications
-
+- [shadcn/ui](https://ui.shadcn.com/) - UI component library
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Prisma](https://prisma.io/) - Database ORM
+- [QRCode.js](https://github.com/soldair/node-qrcode) - QR code generation
+- [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) - Image rendering
 
 ## 📞 Support
 
-If you have questions or need help:
-
-- 📧 Email: [abelrighthere@gmail.com](https://https://gmail.com)
-- 💬 Telegram: [@AbelMaireg](https://t.me/AbelMaireg)
-- 📖 Documentation: [Go To](https://github.com/Zemenaytech/qrcodegenerator)
-- 🐛 Issues: [GitHub Issues](https://github.com/Zemenaytech/qrcodegenerator/issues)
+If you encounter any issues or have questions:
+1. Check the [Issues](../../issues) page for existing solutions
+2. Create a new issue with detailed information
+3. For urgent matters, contact support at vercel.com/help
 
 ---
 
-**Made with ❤️ by Abel Maireg & Fiori Abebe**
+**Made with ❤️ by Abel Maireg**
