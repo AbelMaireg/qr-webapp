@@ -119,7 +119,20 @@ DELETE /api/history - Clear session history
 4. **Configure environment variables**
    Create a `.env` file:
    ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/qr_app_db"
+    DATABASE_URL="postgresql://dbusername:password@localhost:5432/qr_app_db?schema=public"
+    NODE_ENV="development"
+    NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID="ca-pub-XXXXXXXXXXXXXXXXX"
+
+    # Next.js Configuration
+    NEXT_PUBLIC_SITE_URL=https://your-domain.com
+
+    # Google Analytics Configuration
+    NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+
+    # SEO Verification
+    NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-verification-code
+    NEXT_PUBLIC_YANDEX_VERIFICATION=your-yandex-verification-code
+    NEXT_PUBLIC_YAHOO_VERIFICATION=your-yahoo-verification-code
    ```
 
 5. **Run database migrations**
