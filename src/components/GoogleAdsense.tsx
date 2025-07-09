@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 interface GoogleAdsenseProps {
   adSlot: string
@@ -18,6 +18,8 @@ export function GoogleAdsense({
   style = { display: "block" },
 }: GoogleAdsenseProps) {
   const publisherId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID
+  const adRef = useRef<HTMLModElement>(null)
+  const isInitialized = useRef(false)
 
   useEffect(() => {
     if (!publisherId) {
@@ -29,13 +31,25 @@ export function GoogleAdsense({
       return
     }
 
-    try {
-      // @ts-ignore
-      ; (window.adsbygoogle = window.adsbygoogle || []).push({})
-    } catch (err) {
-      console.error("AdSense error:", err)
+    // Only initialize if not already done and element exists
+    if (!isInitialized.current && adRef.current) {
+      try {
+        // Check if the ad element already has content
+        if (adRef.current.innerHTML.trim() === "") {
+          // @ts-ignore
+          ; (window.adsbygoogle = window.adsbygoogle || []).push({})
+          isInitialized.current = true
+        }
+      } catch (err) {
+        console.error("AdSense error:", err)
+      }
     }
-  }, [publisherId])
+
+    // Cleanup function
+    return () => {
+      isInitialized.current = false
+    }
+  }, [publisherId, adSlot])
 
   // Don't render ads if publisher ID is not set
   if (!publisherId) {
@@ -55,6 +69,7 @@ export function GoogleAdsense({
 
   return (
     <ins
+      ref={adRef}
       className="adsbygoogle"
       style={style}
       data-ad-client={publisherId}

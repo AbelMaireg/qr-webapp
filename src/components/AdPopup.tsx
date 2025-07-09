@@ -1,15 +1,68 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { X, Clock } from "lucide-react"
-import { GoogleAdsense } from "./GoogleAdsense"
 
 interface AdPopupProps {
   isOpen: boolean
   onClose: () => void
   onContinue: () => void
+}
+
+// Simple ad component for popup to avoid AdSense conflicts
+function PopupAd() {
+  const publisherId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID
+  const adRef = useRef<HTMLModElement>(null)
+  const isInitialized = useRef(false)
+
+  useEffect(() => {
+    if (!publisherId || !adRef.current || isInitialized.current) return
+
+    try {
+      // Check if the ad element is empty before initializing
+      if (adRef.current.innerHTML.trim() === "") {
+        // @ts-ignore
+        ; (window.adsbygoogle = window.adsbygoogle || []).push({})
+        isInitialized.current = true
+      }
+    } catch (err) {
+      console.error("Popup AdSense error:", err)
+    }
+
+    return () => {
+      isInitialized.current = false
+    }
+  }, [publisherId])
+
+  if (!publisherId) {
+    return (
+      <div className="bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 text-center">
+        <p className="text-gray-500 dark:text-gray-400">
+          {process.env.NODE_ENV === "development" ? "AdSense not configured" : "Advertisement"}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <ins
+      ref={adRef}
+      className="adsbygoogle"
+      style={{
+        display: "block",
+        minHeight: "300px",
+        textAlign: "center",
+        backgroundColor: "white",
+        borderRadius: "4px",
+      }}
+      data-ad-client={publisherId}
+      data-ad-slot="5678901234"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    />
+  )
 }
 
 export function AdPopup({ isOpen, onClose, onContinue }: AdPopupProps) {
@@ -70,16 +123,7 @@ export function AdPopup({ isOpen, onClose, onContinue }: AdPopupProps) {
               <p className="text-sm text-gray-600">Support our free QR code generator by viewing this ad</p>
             </div>
 
-            <GoogleAdsense
-              adSlot="5678901234"
-              style={{
-                display: "block",
-                minHeight: "300px",
-                textAlign: "center",
-                backgroundColor: "white",
-                borderRadius: "4px",
-              }}
-            />
+            <PopupAd />
           </div>
 
           {/* Progress indicator */}
