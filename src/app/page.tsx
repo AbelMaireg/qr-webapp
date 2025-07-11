@@ -9,6 +9,13 @@ import { FeatureSectionAds } from "@/components/GoogleAdsense"
 import { AdPopup } from "@/components/AdPopup"
 import { PageHeader } from "@/components/PageHeader"
 import { SEOOptimizedContent } from "@/components/SEOOptimizedContent"
+import {
+  HowItWorksSection,
+  FeaturesSection,
+  UseCasesSection,
+  BenefitsSection,
+  FAQSection,
+} from "@/components/ContentSections"
 import { useQRGenerator } from "@/hooks/useQRGenerator"
 import { useSession } from "@/hooks/useSession"
 import { useState } from "react"
@@ -88,9 +95,9 @@ export default function QRGenerator() {
             </div>
           )}
 
-          {/* Main Grid - Now 2 columns instead of 3 */}
+          {/* Main Grid - QR Generator Interface */}
           <section
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto mb-16"
             aria-label="QR Code Generator Interface"
           >
             <div className="lg:col-span-1">
@@ -127,14 +134,24 @@ export default function QRGenerator() {
               <PreviewPanel qrCodeUrl={qrCodeUrl} format={format} onDownload={downloadQRCode} />
             </div>
           </section>
+        </div>
 
-          {/* SEO Content */}
+        {/* Content Sections - Outside container for full width */}
+        <HowItWorksSection />
+        <FeaturesSection />
+
+        {/* First Ad Section - After substantial content */}
+        <section aria-label="Sponsored Content" className="py-8">
+          <FeatureSectionAds />
+        </section>
+
+        <UseCasesSection />
+        <BenefitsSection />
+        <FAQSection />
+
+        {/* SEO Content */}
+        <div className="container mx-auto px-4 lg:px-8">
           <SEOOptimizedContent />
-
-          {/* Google AdSense ads */}
-          <section aria-label="Sponsored Content">
-            <FeatureSectionAds />
-          </section>
         </div>
       </div>
     </>
